@@ -20,7 +20,6 @@ export default {
   },
   methods: {
     onChangeFragment: function (componentName) {
-      console.log(componentName)
       this.currentComponent = componentName
     }
   },
