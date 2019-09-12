@@ -5,12 +5,19 @@
  -->
 <template>
     <div class="shopping">
+      <navigation-bar
+        :pageName="'购物车'"
+        :isShowBack="false"></navigation-bar>
       <h1>Shopping</h1>
     </div>
 </template>
 
 <script>
+import NavigationBar from '@c/currency/NavigationBar.vue'
 export default {
+  components: {
+    NavigationBar
+  },
   data () {
     return {}
   },
