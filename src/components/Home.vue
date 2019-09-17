@@ -4,10 +4,10 @@
    Description:
  -->
 <template>
-    <div class="home">
-      <navigation-bar :isShowBack="false">
+    <div class="home" @scroll="onScrollChange">
+      <navigation-bar :isShowBack="false" :navBarStyle="navBarStyle">
         <template v-slot:nav-left>
-          <img src="@img/more-white.svg">
+          <img :src="navBarCurrentSlotStyle.leftIcon">
         </template>
         <template v-slot:nav-center>
           <search :bgColor="navBarCurrentSlotStyle.search.bgColor"
@@ -16,7 +16,7 @@
           </search>
         </template>
         <template v-slot:nav-right>
-          <img src="@img/message-white.svg">
+          <img :src="navBarCurrentSlotStyle.rightIcon">
         </template>
 
       </navigation-bar>
@@ -60,6 +60,10 @@ export default {
   data () {
     return {
 
+      swiperData: [],
+      swiperHeight: '184px',
+      activityDatas: [],
+      secondsDatas: [],
       navBarSlotStyle: {
         // 默认样式
         normal: {
@@ -90,83 +94,19 @@ export default {
       },
       // navBar 当前使用的插槽样式
       navBarCurrentSlotStyle: {},
-
       // navBar 的定制样式,
       navBarStyle: {
         position: 'fixed',
         backgroundColor: ''
       },
-
-      swiperData: [],
-      swiperHeight: '184px',
-      activityDatas: [],
-      secondsDatas: [
-        {
-          id: '1',
-          icon: require('@img/jingDongChaoShi.png'),
-          price: '119.976',
-          oldPrice: '169'
-        },
-        {
-          id: '1',
-          icon: require('@img/jingDongChaoShi.png'),
-          price: '119',
-          oldPrice: '169'
-        },
-        {
-          id: '1',
-          icon: require('@img/jingDongChaoShi.png'),
-          price: '119',
-          oldPrice: '169'
-        },
-        {
-          id: '1',
-          icon: require('@img/jingDongChaoShi.png'),
-          price: '119',
-          oldPrice: '169'
-        },
-
-        {
-          id: '1',
-          icon: require('@img/jingDongChaoShi.png'),
-          price: '119',
-          oldPrice: '169'
-        },
-        {
-          id: '1',
-          icon: require('@img/jingDongChaoShi.png'),
-          price: '119',
-          oldPrice: '169'
-        },
-        {
-          id: '1',
-          icon: require('@img/jingDongChaoShi.png'),
-          price: '119',
-          oldPrice: '169'
-        },
-        {
-          id: '1',
-          icon: require('@img/jingDongChaoShi.png'),
-          price: '119',
-          oldPrice: '169'
-        },
-        {
-          id: '1',
-          icon: require('@img/jingDongChaoShi.png'),
-          price: '119',
-          oldPrice: '169'
-        },
-        {
-          id: '1',
-          icon: require('@img/jingDongChaoShi.png'),
-          price: '119',
-          oldPrice: '169'
-        }
-      ]
+      scrollTopValue: -1,
+      // 锚点值
+      ANCHOR_SCROLL_TOP: 160
     }
   },
   mounted () {
     this.navBarCurrentSlotStyle = this.navBarSlotStyle.normal
+    console.log('style===', this.navBarCurrentSlotStyle)
     this.initData()
   },
   methods: {
@@ -193,6 +133,16 @@ export default {
         this.activityDatas = activityData.list
         this.secondsDatas = secondsData.list
       }))
+    },
+    onScrollChange: function ($event) {
+      this.scrollTopValue = $event.target.scrollTop
+      let opacity = this.scrollTopValue / this.ANCHOR_SCROLL_TOP
+      if (opacity >= 1) {
+        this.navBarCurrentSlotStyle = this.navBarSlotStyle.highlight
+      } else {
+        this.navBarCurrentSlotStyle = this.navBarSlotStyle.normal
+      }
+      this.navBarStyle.backgroundColor = 'rgba(255,255,255,' + opacity + ')'
     }
   }
 }

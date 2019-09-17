@@ -4,8 +4,10 @@
    Description:
  -->
 <template>
-    <div class="nav-bar z-index-max" :class="{'bottom-line' :pageName}">
-        <div class="left">
+    <div class="nav-bar z-index-max"
+         :style="navBarStyle"
+         :class="{'bottom-line' :pageName}">
+        <div class="left" @click="$emit('onLeftClick')">
           <img v-if="isShowBack" src="@img/back.svg">
           <slot name="nav-left"></slot>
         </div>
@@ -29,6 +31,14 @@ export default {
     isShowBack: {
       type: Boolean,
       default: true
+    },
+    navBarStyle: {
+      type: Object,
+      default: function () {
+        return {
+          backgroundColor: 'white'
+        }
+      }
     }
   },
   data () {
