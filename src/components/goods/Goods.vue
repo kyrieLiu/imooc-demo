@@ -4,8 +4,8 @@
    Description:
  -->
 <template>
-    <div class="goods" :class="layoutClass" :style="{height:goodsViewHeight}">
-        <div class="goods-item goods-waterfall-item" ref="goodsItem"
+    <div class="goods" :class="[layoutClass,{'goods-scroll':isScroll}]" :style="{height:goodsViewHeight}">
+        <div class="goods-item" :class="layoutItemClass" ref="goodsItem"
         v-for="(item,index) in dataSource" :key="index" :style="goodsItemStyles[index]">
               <img class="goods-item-img" :style="imgStyles[index]" :src="item.img">
           <div class="goods-item-desc">
@@ -29,8 +29,14 @@ import NoHave from '@c/goods/NoHave.vue'
 export default {
 
   props: {
-    type: String,
-    default: 1
+    layoutType: {
+      type: String,
+      default: '1'
+    },
+    isScroll: {
+      type: Boolean,
+      default: true
+    }
   },
 
   components: {
@@ -46,9 +52,9 @@ export default {
       imgStyles: [],
       ITEM_MARGIN_SIZE: 8,
       goodsItemStyles: [],
-      goodsViewHeight: 0,
-      layoutClass:'goods-list',
-      layoutItemClass:'goods-list-item'
+      goodsViewHeight: '100%',
+      layoutClass: 'goods-list',
+      layoutItemClass: 'goods-list-item'
 
     }
   },
@@ -61,11 +67,31 @@ export default {
         .then(data => {
           console.log(data.list)
           this.dataSource = data.list
+          this.initLayout()
+        })
+    },
+    initLayout: function () {
+      this.goodsViewHeight = '100%'
+      this.goodsItemStyles = []
+      this.imgStyles = []
+      switch (this.layoutType) {
+        case '1':
+          this.layoutClass = 'goods-list'
+          this.layoutItemClass = 'goods-list-item'
+          break
+        case '2':
+          this.layoutClass = 'goods-grid'
+          this.layoutItemClass = 'goods-grid-item'
+          break
+        case '3':
+          this.layoutClass = 'goods-waterfall'
+          this.layoutItemClass = 'goods-waterfall-item'
           this.initImgStyles()
           this.$nextTick(() => {
             this.initWaterfall()
           })
-        })
+          break
+      }
     },
     imgHeight: function () {
       let result = Math.random() * (this.MAX_IMG_HEIGHT - this.MIN_IMG_HEIGHT) + this.MIN_IMG_HEIGHT
@@ -101,7 +127,14 @@ export default {
         }
         this.goodsItemStyles.push(goodsItemStyle)
       })
-      this.goodsViewHeight = (leftHeightTotal > rightHeightTotal ? leftHeightTotal : rightHeightTotal) + 'px'
+      if (!this.isScroll) {
+        this.goodsViewHeight = (leftHeightTotal > rightHeightTotal ? leftHeightTotal : rightHeightTotal) + 'px'
+      }
+    }
+  },
+  watch: {
+    layoutType: function () {
+      this.initLayout()
     }
   }
 }
@@ -110,6 +143,12 @@ export default {
 <style lang="scss" scoped>
   @import "@css/style.scss";
   .goods{
+
+    &-scroll{
+      overflow: hidden;
+      overflow-y: auto;
+    }
+
     background-color: $bgColor;
 
     &-item{
@@ -150,6 +189,41 @@ export default {
       }
     }
   }
+  .goods-list{
+        &-item{
+          display: flex;
+          border-bottom: 1px solid $lineColor;
+
+          .goods-item-img{
+            width: px2rem(120);
+            height: px2rem(120);
+          }
+          .goods-item-desc{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: $marginSize;
+          }
+        }
+  }
+
+  .goods-grid{
+    padding: $marginSize;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    &-item{
+      width: 49%;
+      -webkit-border-radius: $radiusSize;
+      -moz-border-radius: $radiusSize;
+      border-radius: $radiusSize;
+      margin-bottom: $marginSize;
+      .goods-item-img{
+        width: 100%;
+      }
+    }
+  }
+
   .goods-waterfall{
     position: relative;
     margin: $marginSize;

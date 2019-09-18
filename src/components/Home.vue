@@ -34,7 +34,7 @@
             <img src="@img/pinGouJie.gif">
           </div>
         </activity>
-        <goods></goods>
+        <goods :layoutType="'3'" :isScroll="false"></goods>
       </div>
     </div>
 </template>
