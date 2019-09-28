@@ -13,8 +13,11 @@
             </template>
           </navigation-bar>
       <div class="goods-list-page-content">
-         <goods-options></goods-options>
-        <goods :layoutType="layoutType.type"></goods>
+         <goods-options
+         @optionsChange="onGoodsOptionsChange"
+         ></goods-options>
+        <goods :layoutType="layoutType.type"
+        :sort="sortType"></goods>
       </div>
     </div>
 </template>
@@ -29,6 +32,7 @@ export default {
   },
   data () {
     return {
+        sortType:'1',
       layoutTypeDatas: [
         {
           type: '1',
@@ -61,7 +65,10 @@ export default {
       } else {
         this.layoutType = this.layoutTypeDatas[0]
       }
-    }
+    },
+      onGoodsOptionsChange:function (sortType) {
+          this.sortType=sortType;
+      }
   },
   components: {
     NavigationBar,

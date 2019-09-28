@@ -93,6 +93,11 @@ export default {
       })
       this.isShowSubContent = false
     }
+  },
+  watch: {
+    selectOption: function (newV) {
+      this.$emit('optionsChange', newV.id)
+    }
   }
 }
 </script>

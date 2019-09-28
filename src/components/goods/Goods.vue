@@ -6,7 +6,7 @@
 <template>
     <div class="goods" :class="[layoutClass,{'goods-scroll':isScroll}]" :style="{height:goodsViewHeight}">
         <div class="goods-item" :class="layoutItemClass" ref="goodsItem"
-        v-for="(item,index) in dataSource" :key="index" :style="goodsItemStyles[index]">
+        v-for="(item,index) in sortGoodsData" :key="index" :style="goodsItemStyles[index]">
               <img class="goods-item-img" :style="imgStyles[index]" :src="item.img">
           <div class="goods-item-desc">
             <p class="goods-item-desc-name text-line-2" :class="{'goods-item-desc-name-hint':!item.isHave}">
@@ -36,6 +36,10 @@ export default {
     isScroll: {
       type: Boolean,
       default: true
+    },
+    sort: {
+      type: String,
+      default: '1'
     }
   },
 
@@ -47,6 +51,7 @@ export default {
     return {
       dataSource: [
       ],
+      sortGoodsData: [],
       MAX_IMG_HEIGHT: 230,
       MIN_IMG_HEIGHT: 178,
       imgStyles: [],
@@ -67,8 +72,49 @@ export default {
         .then(data => {
           console.log(data.list)
           this.dataSource = data.list
+          this.setSortGoodsData()
           this.initLayout()
         })
+    },
+    setSortGoodsData () {
+      switch (this.sort) {
+        case '1':
+          this.sortGoodsData = this.dataSource.slice(0)
+          break
+        case '1-2':
+          this.getSortGoodsDataFromKey('price')
+          break
+        case '1-3':
+          this.getSortGoodsDataFromKey('volume')
+          break
+        case '2':
+          this.getSortGoodsDataFromKey('isHave')
+          break
+        case '3':
+          this.getSortGoodsDataFromKey('isDirect')
+          break
+      }
+    },
+    getSortGoodsDataFromKey (key) {
+      this.sortGoodsData.sort((goods1, goods2) => {
+        let v1 = goods1[key]
+        let v2 = goods2[key]
+        // 对value进行对比
+        if (typeof v1 === 'boolean') {
+          if (v1) {
+            return -1
+          }
+          if (v2) {
+            return 1
+          }
+          return 0
+        }
+        if (parseFloat(v1) >= parseFloat(v2)) {
+          return -1
+        } else {
+          return 1
+        }
+      })
     },
     initLayout: function () {
       this.goodsViewHeight = '100%'
@@ -135,6 +181,9 @@ export default {
   watch: {
     layoutType: function () {
       this.initLayout()
+    },
+    sort: function () {
+      this.setSortGoodsData()
     }
   }
 }
