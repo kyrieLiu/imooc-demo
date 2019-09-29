@@ -3,11 +3,15 @@
       <navigation-bar :isShowBack="false" :navBarStyle="navBarStyle">
           <template v-slot:nav-left>
             <div class="goods-detail-nav-left" @click="onBackClick">
-              <img src="@img/back-2.svg">
+              <img src="@img/back-2.svg" :style="{opacity:leftImgOpacity}">
+              <img src="@img/back-white.svg" :style="{opacity:navBarSlotOpacity}">
             </div>
           </template>
+        <template v-slot:nav-center>
+          <p class="goods-detail-nav-title" :style="{opacity:navBarSlotOpacity}" style="font-size: 16px">商品详情</p>
+        </template>
       </navigation-bar>
-    <div class="goods-detail-content">
+    <div class="goods-detail-content" @scroll="onScrollChange">
       <my-swiper :height="SWIPER_IMAGE_HEIGHT+'px'"
                  :swiperImgs="goodsData.swiperImgs"
                  :paginationType="'2'"></my-swiper>
@@ -65,10 +69,10 @@ export default {
   data () {
     return {
       SWIPER_IMAGE_HEIGHT: 364,
-      navBarStyle: {
-        backgroundColor: '',
-        position: 'fixed'
-      },
+      // navBarStyle: {
+      //   backgroundColor: '',
+      //   position: 'fixed'
+      // },
       goodsData: {},
       attachDatas: [
         '可配送海外',
@@ -77,16 +81,37 @@ export default {
         '211限时达',
         '可自提',
         '不可使用优惠券'
-      ]
+      ],
+      // 锚点值
+      ANCHOR_SCROLL_TOP: 310,
+      scrollValue: 0
     }
   },
   methods: {
     onBackClick () {
       this.$router.go(-1)
+    },
+    onScrollChange ($event) {
+      this.scrollValue = $event.target.scrollTop
     }
   },
   created () {
     this.goodsData = this.$route.params.goods
+  },
+  computed: {
+    leftImgOpacity () {
+      return 1 - this.scrollValue / this.ANCHOR_SCROLL_TOP
+    },
+    navBarStyle () {
+      return {
+        backgroundColor: 'rgba(216,30,6,' + this.navBarSlotOpacity + ')',
+        position: 'fixed',
+        top: '0'
+      }
+    },
+    navBarSlotOpacity () {
+      return 1 - this.leftImgOpacity
+    }
   }
 }
 </script>
@@ -101,9 +126,18 @@ export default {
     &-nav-left{
       width: 100%;
       display: flex;
+      position: relative;
       img{
+        position: absolute;
         align-self: center;
       }
+    }
+    &-nav-title{
+      width: 100%;
+      height: 100%;
+      font-size: $titleSize;
+      text-align: center;
+      color: white;
     }
     &-content{
       overflow: hidden;
