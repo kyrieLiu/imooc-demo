@@ -25,5 +25,10 @@
   border-top: px2rem(8) solid $mainColor;
   border-left: px2rem(6) solid transparent;
   border-right: px2rem(6) solid transparent;
-
+}
+.single-row-text{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
 }
