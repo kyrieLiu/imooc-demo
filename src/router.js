@@ -17,6 +17,12 @@ export default new Router({
       name: 'goodsList',
       // vue-router 懒加载 只有使用到goodsList才会加载
       component: () => import(/* webpackChunkName: "GoodsList" */'./views/GoodsList.vue')
+    },
+    {
+      path: '/goodsDetail',
+      name: 'goodsDetail',
+      // vue-router 懒加载 只有使用到goodsList才会加载
+      component: () => import(/* webpackChunkName: "GoodsList" */'./views/GoodsDetail.vue')
     }
 
   ]

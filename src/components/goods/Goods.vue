@@ -5,7 +5,7 @@
  -->
 <template>
     <div class="goods" :class="[layoutClass,{'goods-scroll':isScroll}]" :style="{height:goodsViewHeight}">
-        <div class="goods-item" :class="layoutItemClass" ref="goodsItem"
+        <div class="goods-item" :class="layoutItemClass" ref="goodsItem" @click="onItemClick(item)"
         v-for="(item,index) in sortGoodsData" :key="index" :style="goodsItemStyles[index]">
               <img class="goods-item-img" :style="imgStyles[index]" :src="item.img">
           <div class="goods-item-desc">
@@ -176,6 +176,18 @@ export default {
       if (!this.isScroll) {
         this.goodsViewHeight = (leftHeightTotal > rightHeightTotal ? leftHeightTotal : rightHeightTotal) + 'px'
       }
+    },
+    onItemClick: function (item) {
+      if (!item.isHave) {
+        alert('该商品无库存')
+        return
+      }
+      this.$router.push({
+        name: 'goodsDetail',
+        params: {
+          goods: item
+        }
+      })
     }
   },
   watch: {

@@ -33,6 +33,13 @@ export default {
       default: function () {
         return []
       }
+    },
+    /**
+      * 1.圆点切换
+      * */
+    paginationType: {
+      type: String,
+      default: '1'
     }
   },
   data () {
@@ -48,7 +55,29 @@ export default {
       }
     }
   },
-  methods: {},
+  created () {
+    this.initPaginnationLayout()
+  },
+  methods: {
+    initPaginnationLayout: function () {
+      switch (this.paginationType) {
+        case '1':
+          this.swiperOptions.pagination = {
+            el: '.swiper-pagination',
+            type: 'bullets',
+            bulletClass: 'custom-bullet-class'
+          }
+          break
+        case '2':
+          this.swiperOptions.pagination = {
+            el: '.swiper-pagination',
+            type: 'fraction'
+
+          }
+          break
+      }
+    }
+  },
   components: {
     swiper,
     swiperSlide
@@ -78,5 +107,25 @@ export default {
     .swiper-pagination-bullet-active{
       background: #fff;
     }
+  }
+  //数字分页器
+  .swiper-pagination-fraction{
+    left: auto;
+    right: 0;
+    width: auto;
+    font-size: $infoSize;
+    background-color: rgba(0,0,0,0.3);
+    padding: px2rem(6) px2rem(18);
+    border-top-left-radius: px2rem(16);
+    border-bottom-left-radius: px2rem(16);
+    bottom: px2rem(32);
+    color: white;
+    .swiper-pagination-current{
+      font-size: $titleSize;
+      font-weight: bold;
+    }
+  }
+  .swiper-slide-img{
+    width: 100%    ;
   }
 </style>
