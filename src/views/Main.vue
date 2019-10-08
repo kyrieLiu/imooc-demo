@@ -5,7 +5,9 @@
  -->
 <template>
     <div class="main">
-      <component :is="currentComponent"></component>
+      <keep-alive>
+        <component :is="currentComponent"></component>
+      </keep-alive>
       <tool-bar @onChangeFragment="onChangeFragment"></tool-bar>
     </div>
 </template>
@@ -13,6 +15,7 @@
 <script>
 import toolBar from '@c/currency/ToolBar.vue'
 export default {
+  name: 'imooc',
   data () {
     return {
       currentComponent: 'home'
@@ -36,6 +39,7 @@ export default {
 
 <style lang="scss" scoped>
   .main{
+    position: absolute;
     width: 100%;
     height: 100%;
     display: flex;

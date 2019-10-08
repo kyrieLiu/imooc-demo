@@ -7,14 +7,14 @@
               <img src="@img/back-white.svg" :style="{opacity:navBarSlotOpacity}">
             </div>
           </template>
-        <template v-slot:nav-center>
+        <template slot="nav-center">
           <p class="goods-detail-nav-title" :style="{opacity:navBarSlotOpacity}" style="font-size: 16px">商品详情</p>
         </template>
       </navigation-bar>
 
     <div class="goods-detail-content">
       <parallax  @onScrollChange="onScrollChange">
-        <template v-slot:parallax-slow>
+        <template slot="parallax-slow">
           <my-swiper :height="SWIPER_IMAGE_HEIGHT+'px'"
                      :swiperImgs="goodsData.swiperImgs"
                      :paginationType="'2'"></my-swiper>
@@ -67,7 +67,7 @@ import MySwiper from '@c/swiper/MySwiper'
 import Direct from '@c/goods/Direct'
 import Parallax from '@c/parallax/Parallax'
 export default {
-  name: 'GoodsDetail',
+  name: 'goodsDetail',
   components: {
     NavigationBar,
     MySwiper,
@@ -100,12 +100,20 @@ export default {
       this.$router.go(-1)
     },
     onScrollChange (scrollValue) {
-      console.log('更新数值',scrollValue)
       this.scrollValue = scrollValue
+    },
+    loadGoodsData () {
+      this.$http.get('/goodsDetail', {
+        params: {
+          goodsId: this.$route.query.goodsId
+        }
+      }).then((data) => {
+        this.goodsData = data.goodsData
+      })
     }
   },
   created () {
-    this.goodsData = this.$route.params.goods
+    this.loadGoodsData()
   },
   computed: {
     leftImgOpacity () {
@@ -128,6 +136,7 @@ export default {
 <style lang="scss" scoped>
   @import "@css/style.scss";
   .goods-detail{
+    position: absolute;
     width: 100%;
     height: 100%;
     display: flex;

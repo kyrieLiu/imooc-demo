@@ -4,7 +4,8 @@
    Description:
  -->
 <template>
-    <div class="goods" :class="[layoutClass,{'goods-scroll':isScroll}]" :style="{height:goodsViewHeight}">
+    <div class="goods" :class="[layoutClass,{'goods-scroll':isScroll}]" :style="{height:goodsViewHeight}"
+          ref="goods" @scroll="onScrollChange">
         <div class="goods-item" :class="layoutItemClass" ref="goodsItem" @click="onItemClick(item)"
         v-for="(item,index) in sortGoodsData" :key="index" :style="goodsItemStyles[index]">
               <img class="goods-item-img" :style="imgStyles[index]" :src="item.img">
@@ -59,7 +60,8 @@ export default {
       goodsItemStyles: [],
       goodsViewHeight: '100%',
       layoutClass: 'goods-list',
-      layoutItemClass: 'goods-list-item'
+      layoutItemClass: 'goods-list-item',
+      scrollTopValue: 0
 
     }
   },
@@ -67,6 +69,9 @@ export default {
     this.initData()
   },
   methods: {
+    onScrollChange ($event) {
+      this.scrollTopValue = $event.target.scrollTop
+    },
     initData: function () {
       this.$http.get('/goods')
         .then(data => {
@@ -185,10 +190,17 @@ export default {
       this.$router.push({
         name: 'goodsDetail',
         params: {
-          goods: item
+          routerType: 'push'
+        },
+        query: {
+          goodsId: item.id
         }
       })
     }
+  },
+  activated () {
+    console.log('执行activate', this.scrollTopValue)
+    this.$refs.goods.scrollTop = this.scrollTopValue
   },
   watch: {
     layoutType: function () {

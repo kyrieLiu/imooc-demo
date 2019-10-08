@@ -27,12 +27,13 @@ import NavigationBar from '@c/currency/NavigationBar.vue'
 import GoodsOptions from '@c/goods/GoodsOptions.vue'
 import Goods from '@c/goods/Goods.vue'
 export default {
+  name: 'goodsList',
   created: function () {
     this.layoutType = this.layoutTypeDatas[0]
   },
   data () {
     return {
-        sortType:'1',
+      sortType: '1',
       layoutTypeDatas: [
         {
           type: '1',
@@ -66,9 +67,9 @@ export default {
         this.layoutType = this.layoutTypeDatas[0]
       }
     },
-      onGoodsOptionsChange:function (sortType) {
-          this.sortType=sortType;
-      }
+    onGoodsOptionsChange: function (sortType) {
+      this.sortType = sortType
+    }
   },
   components: {
     NavigationBar,
@@ -82,6 +83,7 @@ export default {
   @import "@css/style.scss";
 
   .goods-list-page {
+    position: absolute;
     height: 100%;
     width: 100%;
     background-color: $bgColor;

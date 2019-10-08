@@ -4,7 +4,7 @@
    Description:
  -->
 <template>
-    <div class="home" @scroll="onScrollChange">
+    <div class="home" @scroll="onScrollChange" ref="home">
       <navigation-bar :isShowBack="false" :navBarStyle="navBarStyle">
         <template v-slot:nav-left>
           <img :src="navBarCurrentSlotStyle.leftIcon">
@@ -103,6 +103,10 @@ export default {
       // 锚点值
       ANCHOR_SCROLL_TOP: 160
     }
+  },
+  /* keepAlive组件被激活的时候调用 */
+  activated () {
+    this.$refs.home.scrollTop = this.scrollTopValue
   },
   mounted () {
     this.navBarCurrentSlotStyle = this.navBarSlotStyle.normal
