@@ -11,37 +11,42 @@
           <p class="goods-detail-nav-title" :style="{opacity:navBarSlotOpacity}" style="font-size: 16px">商品详情</p>
         </template>
       </navigation-bar>
-    <div class="goods-detail-content" @scroll="onScrollChange">
-      <my-swiper :height="SWIPER_IMAGE_HEIGHT+'px'"
-                 :swiperImgs="goodsData.swiperImgs"
-                 :paginationType="'2'"></my-swiper>
-
-      <!--内容-->
-      <div class="goods-detail-content-desc">
-        <div class="goods-detail-content-desc-item">
-          <p class="goods-detail-content-desc-item-price">¥{{goodsData.price}}</p>
-          <p class="goods-detail-content-desc-item-name">
-            <direct v-if="goodsData.isDirect"></direct>
-            ¥{{goodsData.name}}</p>
-        </div>
-        <div class="goods-detail-content-desc-item">
-          <p class="goods-detail-content-desc-item-select">已选<span class="single-row-text">{{goodsData.name}}</span></p>
-          <!--附加服务-->
-          <div class="goods-detail-content-desc-item-support">
-              <ul class="goods-detail-content-desc-item-support-list">
-                <li class="goods-detail-content-desc-item-support-list-item"
-                v-for="(item,index) in attachDatas" :key="index">
+    <div class="goods-detail-content" @onScrollChange="onScrollChange">
+      <parallax>
+        <template v-slot:parallax-slow>
+          <my-swiper :height="SWIPER_IMAGE_HEIGHT+'px'"
+                     :swiperImgs="goodsData.swiperImgs"
+                     :paginationType="'2'"></my-swiper>
+        </template>
+        <template>
+          <!--内容-->
+          <div class="goods-detail-content-desc">
+            <div class="goods-detail-content-desc-item">
+              <p class="goods-detail-content-desc-item-price">¥{{goodsData.price}}</p>
+              <p class="goods-detail-content-desc-item-name">
+                <direct v-if="goodsData.isDirect"></direct>
+                ¥{{goodsData.name}}</p>
+            </div>
+            <div class="goods-detail-content-desc-item">
+              <p class="goods-detail-content-desc-item-select">已选<span class="single-row-text">{{goodsData.name}}</span></p>
+              <!--附加服务-->
+              <div class="goods-detail-content-desc-item-support">
+                <ul class="goods-detail-content-desc-item-support-list">
+                  <li class="goods-detail-content-desc-item-support-list-item"
+                      v-for="(item,index) in attachDatas" :key="index">
                     <img src="@img/support.svg">
-                  <span>{{item}}</span>
-                </li>
-              </ul>
-          </div>
-          <div class="goods-detail-content-desc-detail">
-            <img v-for="(item,index) in goodsData.detailImgs" :key="index" :src="item">
-          </div>
+                    <span>{{item}}</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="goods-detail-content-desc-detail">
+                <img v-for="(item,index) in goodsData.detailImgs" :key="index" :src="item">
+              </div>
 
-        </div>
-      </div>
+            </div>
+          </div>
+        </template>
+      </parallax>
     </div>
     <!--加入购物车 立即购买-->
     <div class="goods-detail-buy">
@@ -59,12 +64,14 @@
 import NavigationBar from '@c/currency/NavigationBar'
 import MySwiper from '@c/swiper/MySwiper'
 import Direct from '@c/goods/Direct'
+import Parallax from '@c/parallax/Parallax'
 export default {
   name: 'GoodsDetail',
   components: {
     NavigationBar,
     MySwiper,
-    Direct
+    Direct,
+    Parallax
   },
   data () {
     return {
@@ -91,8 +98,8 @@ export default {
     onBackClick () {
       this.$router.go(-1)
     },
-    onScrollChange ($event) {
-      this.scrollValue = $event.target.scrollTop
+    onScrollChange (scrollValue) {
+      this.scrollValue = scrollValue
     }
   },
   created () {
@@ -140,8 +147,6 @@ export default {
       color: white;
     }
     &-content{
-      overflow: hidden;
-      overflow-y: auto;
       height: 100%;
       &-desc{
         width: 100%;
