@@ -11,8 +11,9 @@
           <p class="goods-detail-nav-title" :style="{opacity:navBarSlotOpacity}" style="font-size: 16px">商品详情</p>
         </template>
       </navigation-bar>
-    <div class="goods-detail-content" @onScrollChange="onScrollChange">
-      <parallax>
+
+    <div class="goods-detail-content">
+      <parallax  @onScrollChange="onScrollChange">
         <template v-slot:parallax-slow>
           <my-swiper :height="SWIPER_IMAGE_HEIGHT+'px'"
                      :swiperImgs="goodsData.swiperImgs"
@@ -99,6 +100,7 @@ export default {
       this.$router.go(-1)
     },
     onScrollChange (scrollValue) {
+      console.log('更新数值',scrollValue)
       this.scrollValue = scrollValue
     }
   },
@@ -147,6 +149,7 @@ export default {
       color: white;
     }
     &-content{
+      overflow: hidden;
       height: 100%;
       &-desc{
         width: 100%;
