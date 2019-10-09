@@ -8,7 +8,13 @@
       <navigation-bar
         :pageName="'购物车'"
         :isShowBack="false"></navigation-bar>
-      <h1>Shopping</h1>
+      <div class="shopping-content">
+        <div class="shopping-content-list">
+          <div class="shopping-content-list-item" v-for="(item,index) in shoppingDatas" :key="index">
+            <img class="shopping-content-list-item-check" src="@img/no-check.svg">
+          </div>
+        </div>
+      </div>
     </div>
 </template>
 
@@ -19,7 +25,9 @@ export default {
     NavigationBar
   },
   data () {
-    return {}
+    return {
+      shoppingDatas: this.$store.state.shoppingDatas
+    }
   },
   methods: {}
 }
