@@ -199,7 +199,6 @@ export default {
     }
   },
   activated () {
-    console.log('执行activate', this.scrollTopValue)
     this.$refs.goods.scrollTop = this.scrollTopValue
   },
   watch: {

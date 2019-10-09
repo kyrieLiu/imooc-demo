@@ -51,10 +51,10 @@
     </div>
     <!--加入购物车 立即购买-->
     <div class="goods-detail-buy">
-      <div class="goods-detail-buy-add">
+      <div class="goods-detail-buy-add" @click="onAddGoodsClick()">
         加入购物车
       </div>
-      <div class="goods-detail-buy-now">
+      <div class="goods-detail-buy-now" @click="onBuyClick()">
         立即购买
       </div>
     </div>
@@ -110,6 +110,30 @@ export default {
       }).then((data) => {
         this.goodsData = data.goodsData
       })
+    },
+    onBuyClick () {
+      this.$router.push({
+        name: 'buy',
+        params: {
+          routerType: 'push'
+        },
+        query: {
+          goodsId: this.goodsData.id
+        }
+      })
+    },
+    onAddGoodsClick: function () {
+      alert('添加成功')
+      this.$router.push(
+        {
+          name: 'imooc',
+          params: {
+            routerType: 'push',
+            componentIndex: 1,
+            clearTask: true
+          }
+        }
+      )
     }
   },
   created () {

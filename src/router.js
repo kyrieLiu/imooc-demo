@@ -9,7 +9,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'main',
+      name: 'imooc',
       component: Main
     },
     {
@@ -21,8 +21,12 @@ export default new Router({
     {
       path: '/goodsDetail',
       name: 'goodsDetail',
-      // vue-router 懒加载 只有使用到goodsList才会加载
-      component: () => import(/* webpackChunkName: "GoodsList" */'./views/GoodsDetail.vue')
+      component: () => import('./views/GoodsDetail.vue')
+    },
+    {
+      path: '/buy',
+      name: 'buy',
+      component: () => import('./views/Buy.vue')
     }
 
   ]

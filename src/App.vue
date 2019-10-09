@@ -84,14 +84,15 @@ export default {
   watch: {
     '$route' (to, from) {
       const routerType = to.params.routerType
-      console.log('to===', to)
-      console.log('from===', from)
       if (routerType === 'push') {
         this.virtualTaskStack.push(to.name)
         this.transitionName = 'fold-left'
       } else {
         this.virtualTaskStack.pop()
         this.transitionName = 'fold-right'
+      }
+      if (to.params.clearTask) {
+        this.virtualTaskStack = ['imooc']
       }
     }
   }
