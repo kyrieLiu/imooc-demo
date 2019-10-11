@@ -14,7 +14,21 @@ export default new Vuex.Store({
   },
   mutations: {
     addShoppingData: function (state, goods) {
-      state.shoppingDatas.push(goods)
+      const isExist = state.shoppingDatas.some(item => {
+        if (item.id === goods.id) {
+          item.number += 1
+          return true
+        }
+      })
+      if (!isExist) {
+        // Vue.set的方法可以吧新添加的属性变为响应式的数据
+        Vue.set(goods, 'isCheck', false)
+        Vue.set(goods, 'number', 1)
+        state.shoppingDatas.push(goods)
+      }
+    },
+    changeShoppingDataNumber: function (state, data) {
+      state.shoppingDatas[data.index].number = data.number
     }
   },
   actions: {
