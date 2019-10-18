@@ -70,8 +70,8 @@
   }
 
 </style>
-
 <script>
+import VConsole from 'vconsole'
 export default {
   data () {
     return {
@@ -95,6 +95,21 @@ export default {
         this.virtualTaskStack = ['imooc']
       }
     }
+  },
+  created () {
+    // eslint-disable-next-line no-unused-vars,no-undef
+    var vConsole = new VConsole()
+    this.$store.commit('setIsIphoneX', window.isIphoneX)
+    // 提供给native调用的方法
+    window.nativeFunctionUserLogin = function (username) {
+      alert(username)
+      return 'H5回调'
+    }
+
+    // window.onFunction = function (str) {
+    //   alert(str)
+    //   return 'onFunction 方法已经调用完成'
+    // }
   }
 }
 </script>

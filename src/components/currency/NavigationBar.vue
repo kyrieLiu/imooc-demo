@@ -5,8 +5,7 @@
  -->
 <template>
     <div class="nav-bar z-index-max"
-         :style="navBarStyle"
-         :class="{'bottom-line' :pageName}">
+         :style="navBarStyle" :class="[{'iphonex-top':$store.state.isIphoneX},{'bottom-line' :pageName}]">
         <div class="left" @click="$emit('onLeftClick')">
           <img v-if="isShowBack" src="@img/back.svg">
           <slot name="nav-left"></slot>

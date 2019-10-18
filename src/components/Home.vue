@@ -61,7 +61,7 @@ export default {
     return {
 
       swiperData: [],
-      swiperHeight: '184px',
+      swiperHeight: this.$store.state.isIphoneX ? '228px' : '184px',
       activityDatas: [],
       secondsDatas: [],
       navBarSlotStyle: {

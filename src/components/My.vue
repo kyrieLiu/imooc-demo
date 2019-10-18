@@ -9,13 +9,16 @@
       <div class="my-content">
         <div class="my-content-header" @click="onLoginClick">
           <img class="my-content-header-avater" src="@img/avater.png">
-          <p class="my-content-header-login">登录/注册</p>
+          <p class="my-content-header-login">{{$store.state.username?$store.state.username:'登录/注册'}}</p>
         </div>
         <div class="my-content-tools">
           <div class="my-content-tools-item" v-for="(item,index) in toolsData" :key="index">
             <p class="my-content-tools-item-name">{{item}}</p>
             <img class="my-content-tools-item-arrow" src="@img/right-arrow.svg">
           </div>
+        </div>
+        <div class="my-content-logout page-commit" v-if="$store.state.username" @click="onLogoutClick">
+          退出登录
         </div>
       </div>
     </div>
@@ -45,6 +48,29 @@ export default {
           routerType: 'push'
         }
       })
+    },
+    onLogoutClick: function () {
+      if (window.androidJSBridge) {
+        this.onLogoutToAndroid()
+      } else if (window.webkit) {
+        this.onLogoutToIOS()
+      }
+    },
+    onLogoutToAndroid: function () {
+      let result = window.androidJSBridge.logout()
+      this.onLogoutCallback(result)
+    },
+    onLogoutToIOS: function () {
+      window.logoutCallback = this.onLogoutCallback
+      window.webkit.messageHandlers.logout.postMessage({})
+    },
+    onLogoutCallback: function (result) {
+      if (result) {
+        this.$store.commit('clearUsername')
+        alert('退出成功')
+      } else {
+        alert('退出失败,请重试')
+      }
     }
   }
 }
@@ -96,6 +122,9 @@ export default {
             width: px2rem(16)
           }
         }
+      }
+      &-logout{
+        margin-top: 20%;
       }
     }
   }

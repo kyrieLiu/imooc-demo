@@ -23,6 +23,7 @@
 
 <script>
 import NavigationBar from '@c/currency/NavigationBar'
+import md5 from '@js/md5.min.js'
 export default {
   name: 'register',
   components: {
@@ -32,7 +33,8 @@ export default {
     return {
       username: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      md5Password: ''
     }
   },
   methods: {
@@ -46,6 +48,37 @@ export default {
       }
       if (this.password.length === 0 || this.password !== this.confirmPassword) {
         alert('请完善密码')
+        return
+      }
+      this.md5Password = md5(this.password)
+      if (window.androidJSBridge) {
+        this.onRegisterToAndroid()
+      } else if (window.webkit) {
+        this.onRegisterToIOS()
+      }
+    },
+    onRegisterToAndroid: function () {
+      let userJson = JSON.stringify({
+        'username': this.username,
+        'password': this.md5Password
+      })
+      let result = window.androidJSBridge.register(userJson)
+      this.onRegisterCallback(result)
+    },
+    onRegisterToIOS: function () {
+      let userObj = {
+        'username': this.username,
+        'password': this.md5Password
+      }
+      window.registerCallback = this.onRegisterCallback
+      window.webkit.messageHandlers.register.postMessage(userObj)
+    },
+    onRegisterCallback: function (result) {
+      if (result) {
+        alert('注册成功')
+        this.$router.go(-1)
+      } else {
+        alert('注册失败,请重试')
       }
     }
   }

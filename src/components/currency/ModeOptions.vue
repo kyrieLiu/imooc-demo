@@ -14,6 +14,7 @@
 </template>
 
 <script>
+
 export default {
   data () {
     return {
@@ -63,6 +64,8 @@ export default {
   },
   methods: {
     onItemClick: function (item) {
+
+      console.log('Hello world')
       this.$router.push({
         name: 'goodsList',
         params: {

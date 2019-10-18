@@ -4,7 +4,7 @@
    Description:
  -->
 <template>
-    <div class="tool-bar">
+    <div class="tool-bar" :class="{'iphonex-bottom':$store.state.isIphoneX}">
         <div class="tool-bar-item" v-for="(item,index) in toolBarData" :key="index" @click="onChangeFragment(item,index)">
           <img class="tool-bar-item-img" :src="[index===selectItemIndex?item.hIcon:item.nIcon]" alt="">
           <p class="tool-bar-item-name" :class="{'tool-bar-item-name-h':index===selectItemIndex}">{{item.name}}</p>

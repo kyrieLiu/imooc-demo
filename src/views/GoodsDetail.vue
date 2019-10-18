@@ -50,7 +50,7 @@
       </parallax>
     </div>
     <!--加入购物车 立即购买-->
-    <div class="goods-detail-buy">
+    <div class="goods-detail-buy" :class="{'iphonex-bottom':$store.state.isIphoneX}">
       <div class="goods-detail-buy-add" @click="onAddGoodsClick()">
         加入购物车
       </div>

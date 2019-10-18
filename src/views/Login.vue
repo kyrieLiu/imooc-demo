@@ -21,6 +21,7 @@
 
 <script>
 import NavigationBar from '@c/currency/NavigationBar'
+import md5 from '@js/md5.min.js'
 export default {
   name: 'login',
   components: {
@@ -41,6 +42,43 @@ export default {
         alert('用户名或密码未输入')
       }
       // 与原生交互
+      this.md5Password = md5(this.password)
+      if (window.androidJSBridge) {
+        this.onLoginToAndroid()
+      } else if (window.webkit) {
+        this.onLoginToIOS()
+      }
+    },
+    onLoginToAndroid: function () {
+      let userJson = JSON.stringify({
+        'username': this.username,
+        'password': this.md5Password
+      })
+      let result = window.androidJSBridge.login(userJson)
+      alert(result)
+      this.onLoginCallback(result)
+    },
+    onLoginToIOS: function () {
+      let userObj = {
+        'username': this.username,
+        'password': this.md5Password
+      }
+      window.loginCallback = this.onLoginCallback
+      window.webkit.messageHandlers.login.postMessage(userObj)
+    },
+    onLoginCallback: function (result) {
+      switch (result) {
+        case '-1':
+          alert('系统内部错误')
+          break
+        case '0':
+          this.$store.commit('setUsername', this.username)
+          this.$router.go(-1)
+          break
+        case '1':
+          alert('用户密码错误')
+          break
+      }
     },
     onRegisterClick: function () {
       this.$router.push({

@@ -10,7 +10,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     // 购物车数据
-    shoppingDatas: []
+    shoppingDatas: [],
+    isIphoneX: false,
+    username: undefined
   },
   mutations: {
     addShoppingData: function (state, goods) {
@@ -29,6 +31,15 @@ export default new Vuex.Store({
     },
     changeShoppingDataNumber: function (state, data) {
       state.shoppingDatas[data.index].number = data.number
+    },
+    setIsIphoneX: function (state, isIphoneX) {
+      state.isIphoneX = isIphoneX
+    },
+    setUsername: function (state, username) {
+      state.username = username
+    },
+    clearUsername: function (state) {
+      state.username = undefined
     }
   },
   actions: {
