@@ -5,6 +5,7 @@
  -->
 <template>
     <div class="main">
+      <div style="background-color: yellow;height: 100%;"></div>
       <keep-alive>
         <component :is="currentComponent"></component>
       </keep-alive>

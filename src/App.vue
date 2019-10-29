@@ -100,9 +100,11 @@ export default {
     // eslint-disable-next-line no-unused-vars,no-undef
     var vConsole = new VConsole()
     this.$store.commit('setIsIphoneX', window.isIphoneX)
+    var that = this
     // 提供给native调用的方法
     window.nativeFunctionUserLogin = function (username) {
-      alert(username)
+      console.log('设置用户名', username)
+      that.$store.commit('setUsername', username)
       return 'H5回调'
     }
 
