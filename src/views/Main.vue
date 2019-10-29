@@ -42,6 +42,8 @@ export default {
     'shopping': () => import('@c/Shopping'),
     'my': () => import('@c/My')
 
+
+
   }
 }
 </script>
