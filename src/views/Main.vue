@@ -5,7 +5,6 @@
  -->
 <template>
     <div class="main">
-      <div style="background-color: yellow;height: 100%;"></div>
       <keep-alive>
         <component :is="currentComponent"></component>
       </keep-alive>
@@ -41,8 +40,6 @@ export default {
     'home': () => import('@c/Home'),
     'shopping': () => import('@c/Shopping'),
     'my': () => import('@c/My')
-
-
 
   }
 }
